@@ -1,8 +1,12 @@
 import requests
 import streamlit as st
 import pandas as pd
-import plotly 
 import plotly.express as px
+
+from get_weather_data import get_weather_data
+from get_currency_data import get_currency_data
+from get_country_power_breakdown import get_country_power_breakdown
+from get_country_co2_emission import get_country_co2_emission
 
 # Page setting
 
@@ -14,76 +18,6 @@ st.set_page_config(
     menu_items={
         'About': "# This App is created by Abı. This APP graphs *electricity generation breakdown* and *carbon footprint* data!"}
 )
-
-
-
-def get_weather_data():
-    url = 'https://weatherapi-com.p.rapidapi.com/current.json'
-
-    headers = {"X-RapidAPI-Key": "2bc76f3170msh36ecfc3a0a619acp1d9976jsn1e63aae1a069",
-               "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"}
-
-    querystring = {"q": "Istanbul"}
-    #   "dt": "2023-12-16"
-    response = requests.get(url, headers=headers, params=querystring)
-    outputs = response.json()
-
-    return outputs
-
-
-def get_currency_data():
-    url = 'https://exchange-rate-api1.p.rapidapi.com/latest'
-
-    headers = {'X-RapidAPI-Key': '2bc76f3170msh36ecfc3a0a619acp1d9976jsn1e63aae1a069',
-                'X-RapidAPI-Host': 'exchange-rate-api1.p.rapidapi.com'}  #   YYY
-
-    params = {'base': 'TRY'}
-
-    response = requests.get(url, headers=headers, params=params)
-    outputs = response.json()
-    eur = round(1 / outputs['rates']['EUR'], 3)
-    usd = round(1 / outputs['rates']['USD'], 3)
-    azn = round(1 / outputs['rates']['AZN'], 3)
-    currency = [eur, usd, azn]
-
-    return currency
-
-
-def get_country_co2_emission():
-
-    url = 'https://api-access.electricitymaps.com/'
-    get_archives = 'free-tier/carbon-intensity/history?zone=TR'
-
-    headers = {
-        "auth-token": "K0ibQ9hdlcllUb0Um9pfqtbkbKKf0Rr1"
-    }
-
-    response = requests.get(url + get_archives, headers=headers)
-    outputs = response.json()
-
-    value_dict = {}
-    for i in range(len(outputs['history'])):
-        date = f"{outputs['history'][i]['datetime']}"
-        carbon_value = outputs['history'][i]['carbonIntensity']
-        value_dict[date] = carbon_value
-
-    return value_dict
-
-def get_country_power_breakdown():
-
-    url = 'https://api-access.electricitymaps.com/'
-    get_archives = 'free-tier/power-breakdown/latest?zone=TR'
-
-    headers = {
-        "auth-token": "K0ibQ9hdlcllUb0Um9pfqtbkbKKf0Rr1"
-    }
-
-    response = requests.get(url + get_archives, headers=headers)
-    outputs = response.json()
-    outputs = outputs['powerProductionBreakdown']
-
-    return outputs
-
 
 # Data
 data_json_weather = get_weather_data()
