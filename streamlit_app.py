@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 import pandas as pd
-from plotly import express as px
+import plotly.express as px
 
 # Page setting
 
