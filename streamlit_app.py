@@ -23,6 +23,7 @@ def get_weather_data():
                "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"}
 
     querystring = {"q": "Istanbul"}
+    #   "dt": "2023-12-16"
     response = requests.get(url, headers=headers, params=querystring)
     outputs = response.json()
 
