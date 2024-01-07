@@ -23,7 +23,6 @@ def get_weather_data():
                "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"}
 
     querystring = {"q": "Istanbul"}
-    #   "dt": "2023-12-16"
     response = requests.get(url, headers=headers, params=querystring)
     outputs = response.json()
 
@@ -62,7 +61,7 @@ def get_country_co2_emission():
 
     value_dict = {}
     for i in range(len(outputs['history'])):
-        date = f'{outputs['history'][i]['datetime']}'
+        date = f"{outputs['history'][i]['datetime']}"
         carbon_value = outputs['history'][i]['carbonIntensity']
         value_dict[date] = carbon_value
 
